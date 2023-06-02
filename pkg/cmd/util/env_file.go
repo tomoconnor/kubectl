@@ -30,6 +30,10 @@ import (
 
 var utf8bom = []byte{0xEF, 0xBB, 0xBF}
 
+func IsHashChar(r rune) bool {
+	return r == '#'
+}
+
 // processEnvFileLine returns a blank key if the line is empty or a comment.
 // The value will be retrieved from the environment if necessary.
 func processEnvFileLine(line []byte, filePath string,
@@ -47,6 +51,9 @@ func processEnvFileLine(line []byte, filePath string,
 
 	// trim the line from all leading whitespace first
 	line = bytes.TrimLeftFunc(line, unicode.IsSpace)
+	// trim the trailing characters after a # comment
+	line = bytes.TrimRightFunc(line, IsHashChar)
+	
 
 	// If the line is empty or a comment, we return a blank key/value pair.
 	if len(line) == 0 || line[0] == '#' {
