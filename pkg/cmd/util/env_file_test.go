@@ -40,6 +40,8 @@ func Test_processEnvFileLine(t *testing.T) {
 
 		{"no key is returned on a comment line",
 			[]byte{' ', '#', 'c'}, 0, "", "", ""},
+		{"no comment is returned with an inline comment",
+			[]byte{' ', 'x', '=', 'v', '#', 'c'}, 0, "x", "v", ""},
 
 		{"no key is returned on a blank line",
 			[]byte{' ', ' ', '\t'}, 0, "", "", ""},
